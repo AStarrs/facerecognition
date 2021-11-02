@@ -14,12 +14,13 @@ const app = new Clarifai.App({
  });
 
 const particalsOptions =  {
+  "fps_limit": 30,
   particles: {
     number: {
-      value: 150,
+      value: 100,
       density: {
         enable: true,
-        value_area: 700
+        value_area: 2000
       }
     },
     move: {
@@ -39,15 +40,15 @@ class App extends Component {
   }
 
   onInputChange = (event) => {
-    console.log(event.target.value);
+    this.setState({input: event.target.value});
   }
 
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input});
     app.models
       .predict(
-        Clarifai.COLOR_MODEL,
-        "https://samples.clarifai.com/face-det.jpg")
+        Clarifai.FACE_DETECT_MODEL,
+        this.state.input)
       .then(
         function(response) {
           console.log(response)
